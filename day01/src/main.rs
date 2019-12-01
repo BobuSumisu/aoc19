@@ -1,49 +1,47 @@
 use std::io::{self, Read};
 
-type Result<T> = std::result::Result<T, std::boxed::Box<dyn std::error::Error>>;
+fn mass_to_fuel(mass: u64) -> u64 {
+    (mass / 3).saturating_sub(2)
+}
 
-fn main() -> Result<()> {
+struct Module {
+    mass: u64,
+}
+
+impl Module {
+    fn new(mass: u64) -> Module {
+        Module { mass }
+    }
+
+    fn fuel_required(&self) -> u64 {
+        mass_to_fuel(self.mass)
+    }
+
+    fn fuel_required_corrected(&self) -> u64 {
+        std::iter::successors(Some(self.fuel_required()), |&fuel| Some(mass_to_fuel(fuel)))
+            .take_while(|&fuel| fuel != 0)
+            .sum()
+    }
+}
+
+fn main() {
     let mut input = String::new();
-    io::stdin().read_to_string(&mut input)?;
-    let values = parse_input(input)?;
+    io::stdin().read_to_string(&mut input).unwrap();
 
-    let ans1 = part1(&values)?;
-    println!("part1: {}", ans1);
+    let modules: Vec<Module> = input
+        .lines()
+        .filter_map(|line| line.parse().ok())
+        .map(|mass| Module::new(mass))
+        .collect();
 
-    let ans2 = part2(&values)?;
-    println!("part2: {}", ans2);
+    let solution_part1: u64 = modules.iter().map(|module| module.fuel_required()).sum();
+    println!("Solution part 1: {}", solution_part1);
 
-    Ok(())
-}
-
-fn parse_input(input: String) -> Result<Vec<u32>> {
-    match input.lines().map(|line| line.parse::<u32>()).collect() {
-        Ok(values) => Ok(values),
-        Err(err) => Err(format!("failed to parse integer: {}", err))?,
-    }
-}
-
-fn fuel_required(mass: u32, extra_fuel: bool) -> u32 {
-    let fuel = (mass as f32 / 3.0).floor() as i32 - 2;
-    let fuel = if fuel < 0 { 0 } else { fuel as u32 };
-
-    if fuel == 0 {
-        0
-    } else if extra_fuel {
-        fuel + fuel_required(fuel, true)
-    } else {
-        fuel
-    }
-}
-
-fn part1(values: &Vec<u32>) -> Result<u32> {
-    let v = values.iter().map(|v| fuel_required(*v, false)).sum();
-    Ok(v)
-}
-
-fn part2(values: &Vec<u32>) -> Result<u32> {
-    let v = values.iter().map(|v| fuel_required(*v, true)).sum();
-    Ok(v)
+    let solution_part2: u64 = modules
+        .iter()
+        .map(|module| module.fuel_required_corrected())
+        .sum();
+    println!("Solution part 2: {}", solution_part2);
 }
 
 #[cfg(test)]
@@ -53,30 +51,38 @@ mod tests {
 
     #[test]
     fn test_fuel_required() {
-        assert_eq!(fuel_required(12, false), 2);
-        assert_eq!(fuel_required(14, false), 2);
-        assert_eq!(fuel_required(1969, false), 654);
-        assert_eq!(fuel_required(100756, false), 33583);
+        assert_eq!(Module::new(12).fuel_required(), 2);
+        assert_eq!(Module::new(14).fuel_required(), 2);
+        assert_eq!(Module::new(1969).fuel_required(), 654);
+        assert_eq!(Module::new(100756).fuel_required(), 33583);
     }
 
     #[test]
     fn test_extra_fuel_required() {
-        assert_eq!(fuel_required(14, true), 2);
-        assert_eq!(fuel_required(1969, true), 966);
-        assert_eq!(fuel_required(100756, true), 50346);
+        assert_eq!(Module::new(14).fuel_required_corrected(), 2);
+        assert_eq!(Module::new(1969).fuel_required_corrected(), 966);
+        assert_eq!(Module::new(100756).fuel_required_corrected(), 50346);
     }
 
     #[test]
-    fn test_part1() -> Result<()> {
-        let values = parse_input(fs::read_to_string("input/input.txt")?)?;
-        assert_eq!(part1(&values)?, 3267890);
-        Ok(())
+    fn test_part1() {
+        let sum: u64 = fs::read_to_string("input/input.txt")
+            .unwrap()
+            .lines()
+            .filter_map(|line| line.parse().ok())
+            .map(|mass| Module::new(mass).fuel_required())
+            .sum();
+        assert_eq!(sum, 3267890);
     }
 
     #[test]
-    fn test_part2() -> Result<()> {
-        let values = parse_input(fs::read_to_string("input/input.txt")?)?;
-        assert_eq!(part2(&values)?, 4898972);
-        Ok(())
+    fn test_part2() {
+        let sum: u64 = fs::read_to_string("input/input.txt")
+            .unwrap()
+            .lines()
+            .filter_map(|line| line.parse().ok())
+            .map(|mass| Module::new(mass).fuel_required_corrected())
+            .sum();
+        assert_eq!(sum, 4898972);
     }
 }
