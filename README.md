@@ -39,3 +39,13 @@ is computed based on the preceding one.
 Use [filter_map](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.filter_map) to, well, filter and map.
 Very useful with [ok](https://doc.rust-lang.org/std/result/enum.Result.html#method.ok) which converts a `Result<T, E>` into `Option<T>`
 (and thus dicarding the error).
+
+### Day 2
+
+Mainly: don't overengineer! Apart from that I didn't see any major differences (that I liked) in other people's solutions.
+
+A small thing I learned was using `&[T]` over `&Vec<T>` in function parameters.
+The only time you want to use `&Vec<T>`
+is if you for some reason need to read the vector's capacity.
+If you want to change the vector you'd have to use `&mut Vec<T>` anyway (ref. [Steve
+Klabnik](https://www.reddit.com/r/rust/comments/8kujd1/newbie_correct_way_to_pass_vector_of_references/)).
