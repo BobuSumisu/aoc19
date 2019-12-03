@@ -23,8 +23,9 @@ $ for f in day??/Cargo.toml; do cargo test --release --manifest-path=$f; done
 
 ## Inspiration
 
-- [Armin Ronacher](https://github.com/mitsuhiko/aoc19)
-- [Andrew Gallant (2018)](https://github.com/BurntSushi/advent-of-code)
+- [Andrew "BurntSushi" Gallant (2018)](https://github.com/BurntSushi/advent-of-code)
+- [Armin "mitsuhiko" Ronacher](https://github.com/mitsuhiko/aoc19)
+- [Marc "noirotm" Noirot](https://github.com/noirotm/advent-of-code-2019)
 
 ## Stuff Learned
 
@@ -52,10 +53,18 @@ Klabnik](https://www.reddit.com/r/rust/comments/8kujd1/newbie_correct_way_to_pas
 
 ### Day 3
 
-The current code is just terrible. It just loops through the of path A and at every points checks it against every
-point in path B.
+Improved performance quite a bit by using `HashSet` (and the
+[intersection](https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.intersection) method) instead of
+`Vec`.
 
-Was thinking about converting the paths to collection of lines and using some line intersection math stuff, but need to
-get the time to look into it.
+Learned to implement the [Hash](https://doc.rust-lang.org/std/hash/trait.Hash.html) and
+[PartialEq](https://doc.rust-lang.org/std/cmp/trait.PartialEq.html) traits.
 
-It works for now, but it takes ~12 seconds on my laptop :(.
+Still not sure about `Eq` vs `PartialEq` and `Ord` vs `PartialOrd`. Probably need to see it more in the wild to
+understand when and why to use them.
+
+Some other subjects that still are fuzzy: reference vs value, `iter` vs `into_iter`, all the different `ok`, `ok_or`,
+`or_else`, `ok_or_else`, `unwrap_or`, `unwrap_or_else`, etc. Probably mixing `Option` and `Result` here.
+
+Lifetimes are still pretty much terra incognita so I basically try avoid them for now. Same for all that trait stuff in
+functions (apparently they are called [bounds](https://doc.rust-lang.org/rust-by-example/generics/bounds.html)).

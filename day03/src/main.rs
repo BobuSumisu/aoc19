@@ -22,7 +22,7 @@ fn part1(input: &str) -> u64 {
         .clone()
         .map(|p| p.distance_from_origin())
         .min()
-        .unwrap_or(0)
+        .unwralp()
 }
 
 fn part2(input: &str) -> u64 {
