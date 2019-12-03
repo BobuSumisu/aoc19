@@ -49,3 +49,13 @@ The only time you want to use `&Vec<T>`
 is if you for some reason need to read the vector's capacity.
 If you want to change the vector you'd have to use `&mut Vec<T>` anyway (ref. [Steve
 Klabnik](https://www.reddit.com/r/rust/comments/8kujd1/newbie_correct_way_to_pass_vector_of_references/)).
+
+### Day 3
+
+The current code is just terrible. It just loops through the of path A and at every points checks it against every
+point in path B.
+
+Was thinking about converting the paths to collection of lines and using some line intersection math stuff, but need to
+get the time to look into it.
+
+It works for now, but it takes ~12 seconds on my laptop :(.
