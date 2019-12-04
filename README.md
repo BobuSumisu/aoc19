@@ -68,3 +68,13 @@ Some other subjects that still are fuzzy: reference vs value, `iter` vs `into_it
 
 Lifetimes are still pretty much terra incognita so I basically try avoid them for now. Same for all that trait stuff in
 functions (apparently they are called [bounds](https://doc.rust-lang.org/rust-by-example/generics/bounds.html)).
+
+### Day 4
+
+Found a great answer on
+[StackOverflow](https://stackoverflow.com/questions/27535289/what-is-the-correct-way-to-return-an-iterator-or-any-other-trait)
+on how to return an `Iterator` from a function. To summarize: use [impl
+trait](https://github.com/rust-lang/rfcs/blob/master/text/1522-conservative-impl-trait.md) or  `Box` (if the return
+type is decided dynamically). Can
+also use [newtype](https://doc.rust-lang.org/1.0.0/style/features/types/newtype.html) or [type
+aliases](https://doc.rust-lang.org/1.1.0/book/type-aliases.html).
