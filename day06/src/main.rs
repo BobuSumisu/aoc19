@@ -45,8 +45,8 @@ impl<'a> Space<'a> {
     }
 
     fn distance_between(&self, a: &str, b: &str) -> usize {
-        let mut a_parents = self.all_parents(a);
-        let mut b_parents = self.all_parents(b);
+        let a_parents = self.all_parents(a);
+        let b_parents = self.all_parents(b);
 
         let mut dist = 0;
 
@@ -103,6 +103,7 @@ mod tests {
     fn test_examples_part2() {
         let input = "COM)B\nB)C\nC)D\nD)E\nE)F\nB)G\nG)H\nD)I\nE)J\nJ)K\nK)L\nK)YOU\nI)SAN";
         let space = parse_input(&input);
+        assert_eq!(4, space.distance_between("YOU", "SAN"));
     }
 
     #[test]
