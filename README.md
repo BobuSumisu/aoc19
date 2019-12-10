@@ -78,3 +78,23 @@ trait](https://github.com/rust-lang/rfcs/blob/master/text/1522-conservative-impl
 type is decided dynamically). Can
 also use [newtype](https://doc.rust-lang.org/1.0.0/style/features/types/newtype.html) or [type
 aliases](https://doc.rust-lang.org/1.1.0/book/type-aliases.html).
+
+### Day 5
+
+### Day 6
+
+### Day 7
+
+Use [Default](https://doc.rust-lang.org/std/default/trait.Default.html).
+[Itertools](https://docs.rs/itertools/0.8.2/itertools/) for
+[permutations](https://docs.rs/itertools/0.8.2/itertools/trait.Itertools.html#method.permutations) and other cool
+functional stuff which aren't in the std yet.
+
+Was a simple answer on the `iter` vs `into_iter` on
+[StackOverflow](https://stackoverflow.com/questions/34733811/what-is-the-difference-between-iter-and-into-iter):
+
+- `iter()` iterates over the items by reference
+- `into_iter()` iterates over the items, moving them into the new scope
+- `iter_mut()` iterates over the items, giving a mutable reference to each item
+
+But looking at other answers it seems to be at bit more complicated (and context dependent).
