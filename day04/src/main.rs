@@ -1,20 +1,3 @@
-fn main() {
-    println!("Part 1: {}", part1());
-    println!("Part 2: {}", part2());
-}
-
-fn get_input() -> impl Iterator<Item = u64> {
-    (356_261..846_303)
-}
-
-fn part1() -> usize {
-    get_input().filter(|&x| is_valid_password(x)).count()
-}
-
-fn part2() -> usize {
-    get_input().filter(|&x| is_valid_password2(x)).count()
-}
-
 struct DigitIter(u64);
 
 impl Iterator for DigitIter {
@@ -49,6 +32,7 @@ fn is_valid_password(password: u64) -> bool {
 
     has_double
 }
+
 fn is_valid_password2(password: u64) -> bool {
     let mut has_double = false;
     let mut prev = None;
@@ -80,6 +64,23 @@ fn is_valid_password2(password: u64) -> bool {
     }
 
     has_double
+}
+
+fn get_input() -> impl Iterator<Item = u64> {
+    (356_261..846_303)
+}
+
+fn part1() -> usize {
+    get_input().filter(|&x| is_valid_password(x)).count()
+}
+
+fn part2() -> usize {
+    get_input().filter(|&x| is_valid_password2(x)).count()
+}
+
+fn main() {
+    println!("Part 1: {}", part1());
+    println!("Part 2: {}", part2());
 }
 
 #[cfg(test)]

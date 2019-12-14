@@ -1,25 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use std::fs;
 
-fn main() {
-    let input = fs::read_to_string("input/input.txt").unwrap();
-    let space = parse_input(&input);
-    println!("Part 1: {}", space.num_orbits());
-    println!("Part 2: {}", space.distance_between("YOU", "SAN"));
-}
-
-fn parse_input(input: &str) -> Space {
-    let orbits: Vec<Orbit> = input
-        .lines()
-        .map(|l| {
-            let mut i = l.split(')');
-            Orbit(i.next().unwrap(), i.next().unwrap())
-        })
-        .collect();
-
-    orbits.into()
-}
-
 #[derive(Debug)]
 struct Orbit<'a>(&'a str, &'a str);
 
@@ -88,6 +69,25 @@ impl<'a> From<Vec<Orbit<'a>>> for Space<'a> {
     }
 }
 
+fn parse_input(input: &str) -> Space {
+    let orbits: Vec<Orbit> = input
+        .lines()
+        .map(|l| {
+            let mut i = l.split(')');
+            Orbit(i.next().unwrap(), i.next().unwrap())
+        })
+        .collect();
+
+    orbits.into()
+}
+
+fn main() {
+    let input = fs::read_to_string("input/input.txt").unwrap();
+    let space = parse_input(&input);
+    println!("Part 1: {}", space.num_orbits());
+    println!("Part 2: {}", space.distance_between("YOU", "SAN"));
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -96,25 +96,25 @@ mod tests {
     fn test_examples_part1() {
         let input = "COM)B\nB)C\nC)D\nD)E\nE)F\nB)G\nG)H\nD)I\nE)J\nJ)K\nK)L";
         let space = parse_input(&input);
-        assert_eq!(42, space.num_orbits());
+        assert_eq!(space.num_orbits(), 42);
     }
 
     #[test]
     fn test_examples_part2() {
         let input = "COM)B\nB)C\nC)D\nD)E\nE)F\nB)G\nG)H\nD)I\nE)J\nJ)K\nK)L\nK)YOU\nI)SAN";
         let space = parse_input(&input);
-        assert_eq!(4, space.distance_between("YOU", "SAN"));
+        assert_eq!(space.distance_between("YOU", "SAN"), 4);
     }
 
     #[test]
     fn test_part1() {
         let space = parse_input(include_str!("../input/input.txt"));
-        assert_eq!(300598, space.num_orbits());
+        assert_eq!(space.num_orbits(), 300_598);
     }
 
     #[test]
     fn test_part2() {
         let space = parse_input(include_str!("../input/input.txt"));
-        assert_eq!(520, space.distance_between("YOU", "SAN"));
+        assert_eq!(space.distance_between("YOU", "SAN"), 520);
     }
 }
